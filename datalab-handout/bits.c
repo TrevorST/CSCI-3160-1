@@ -197,9 +197,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-  int a = 1;
-  a= a << 31;
-	return a;
+
 }
 //2
 /*
