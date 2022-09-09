@@ -178,6 +178,8 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
+  /* bitwise AND each parameter with the one's complement of the other, then take the one's complement of those solutions and bitwise AND them,
+  *  and lastly take the one's complement again to find our solution */
   int xFlip = ~x;
   int yFlip = ~y;
   int xSet = x & yFlip;
@@ -194,9 +196,10 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-  int a = 1;
-  a= a << 31;
-	return a;
+  /* minimum two's complement int would be the most negative value, 1 followed by 31 zeros. Take 1 and shift left by 31 bits,
+  *  exploiting bit shifting to generate large numbers with minimal operators. */
+  int a = 1 << 31;
+  return a;
 }
 //2
 /*
