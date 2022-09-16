@@ -178,8 +178,6 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  /* bitwise AND each parameter with the one's complement of the other, then take the one's complement of those solutions and bitwise AND them,
-  *  and lastly take the one's complement again to find our solution */
   int xFlip = ~x;
   int yFlip = ~y;
   int xSet = x & yFlip;
@@ -196,8 +194,6 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-  /* minimum two's complement int would be the most negative value, 1 followed by 31 zeros. Take 1 and shift left by 31 bits,
-  *  exploiting bit shifting to generate large numbers with minimal operators. */
   int a = 1 << 31;
   return a;
 }
@@ -210,12 +206,7 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  int a = x + 1;
-  a = a & x;
-  a = ~a;
-  a = a + 1;
-  a = !a ^ !x;
-  return a;
+  return 2;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -276,7 +267,30 @@ int conditional(int x, int y, int z) {
  *   Max ops: 24
  *   Rating: 3
  */
+
+/*
+ * first we need to narrow down to the sign bit by shifting x and y 31 to the right
+ *then we take the xor of that and ! that which is 1 if the signs are different.
+ then check if x is neg and signs are different by anding x with var above
+
+ */
 int isLessOrEqual(int x, int y) {
+
+	int x_sign = x>>31;				//set sign bit for x
+	int y_sign = y<<31;				//set sign bit for y
+
+	//outputs 1 if signs are different - so for 4,5 this would be 0 & 0 both
+	//! to 1 and 1 which would still give a 0 because the sign bits are the same
+	int d_sign = !(x_sign) ^ !(y_sign);
+
+	//cond1 is 1 when d_sign = 1 and x os negative so 1 & 1 = 1
+	int cond1 = d_sign & x_sign;
+
+	//
+	int cond2 = !d_sign & 
+
+	       
+
   return 2;
 }
 //4
@@ -289,7 +303,10 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+  int temp = (x + (~0 + 1)) | (0 + (~x + 1));
+  temp = temp >> 31;
+  temp = temp ^ ~0;
+  return !(~temp);
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
