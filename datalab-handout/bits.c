@@ -276,22 +276,15 @@ int conditional(int x, int y, int z) {
  */
 int isLessOrEqual(int x, int y) {
 
-	int x_sign = x>>31;				//set sign bit for x
-	int y_sign = y<<31;				//set sign bit for y
+	int x_sign = x>>31;                             //set sign bit for x
+        int y_sign = y>>31;                             //set sign bit for y
 
-	//outputs 1 if signs are different - so for 4,5 this would be 0 & 0 both
-	//! to 1 and 1 which would still give a 0 because the sign bits are the same
-	int d_sign = !(x_sign) ^ !(y_sign);
+        int d_sign = x_sign & (!y_sign);
 
-	//cond1 is 1 when d_sign = 1 and x os negative so 1 & 1 = 1
-	int cond1 = d_sign & x_sign;
+        int s_sign = ((x+(~y)) >>31) & (!(x_sign ^ y_sign));
 
-	//
-	int cond2 = !d_sign & 
+        return d_sign|s_sign;
 
-	       
-
-  return 2;
 }
 //4
 /* 
