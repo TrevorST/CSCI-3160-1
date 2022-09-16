@@ -178,7 +178,14 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return 2;
+  int xFlip = ~x;
+  int yFlip = ~y;
+  int xSet = x & yFlip;
+  int ySet = y & xFlip;
+  int xSetFlip = ~xSet;
+  int ySetFlip = ~ySet;
+  int ansFlip = xSetFlip & ySetFlip;
+  return ~ansFlip;
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -187,7 +194,8 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-  return 2;
+  int a = 1 << 31;
+  return a;
 }
 //2
 /*
@@ -209,20 +217,13 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
- /*this will be dine by creating a subnet mask to compare the number with.  this is similar to what a subnet
-  * mask in networking does. the mask will have 1's in all the odd bit places  
-  */
-	int my_mask = 0xAAAAAAAA;
-	
-	//ands against the created mask
-	int check_num = my_mask & x;
-	
-	//xor the new number with the mask and nots that number
-	int ret_num = !(check_num ^ my_mask);
-	
-	return ret_num;
-	 
-  
+  /* Generates a mask of the desired bits to be set to 1 to quickly check for compliance. */	
+  int a = 170;
+  int b = (a << 8) + 170;
+  int c = (b << 16) + b;
+  int d = c & x;
+  a = d ^ c;
+  return !a;
 }
 /* 
  * negate - return -x 
@@ -232,10 +233,9 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-
-	//takes the twos compliment and adds 1
-	int invert = ~x + 1;
-  return invert;
+  /* Utilizes the two's complement to find the negative of any value */	
+  int a = ~x + 1;
+  return a;
 }
 //3
 /* 
