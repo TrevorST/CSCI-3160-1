@@ -210,7 +210,12 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  int a = x + 1;
+  a = a & x;
+  a = ~a;
+  a = a + 1;
+  a = !a ^ !x;
+  return a;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -221,7 +226,13 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  /* Generates a mask of the desired bits to be set to 1 to quickly check for compliance. */	
+  int a = 170;
+  int b = (a << 8) + 170;
+  int c = (b << 16) + b;
+  int d = c & x;
+  a = d ^ c;
+  return !a;
 }
 /* 
  * negate - return -x 
@@ -231,7 +242,9 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  /* Utilizes the two's complement to find the negative of any value */	
+  int a = ~x + 1;
+  return a;
 }
 //3
 /* 
