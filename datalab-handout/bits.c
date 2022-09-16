@@ -178,16 +178,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  /* bitwise AND each parameter with the one's complement of the other, then take the one's complement of those solutions and bitwise AND them,
-  *  and lastly take the one's complement again to find our solution */
-  int xFlip = ~x;
-  int yFlip = ~y;
-  int xSet = x & yFlip;
-  int ySet = y & xFlip;
-  int xSetFlip = ~xSet;
-  int ySetFlip = ~ySet;
-  int ansFlip = xSetFlip & ySetFlip;
-  return ~ansFlip;
+  return 2;
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -196,10 +187,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-  /* minimum two's complement int would be the most negative value, 1 followed by 31 zeros. Take 1 and shift left by 31 bits,
-  *  exploiting bit shifting to generate large numbers with minimal operators. */
-  int a = 1 << 31;
-  return a;
+  return 2;
 }
 //2
 /*
@@ -221,7 +209,20 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+ /*this will be dine by creating a subnet mask to compare the number with.  this is similar to what a subnet
+  * mask in networking does. the mask will have 1's in all the odd bit places  
+  */
+	int my_mask = 0xAAAAAAAA;
+	
+	//ands against the created mask
+	int check_num = my_mask & x;
+	
+	//xor the new number with the mask and nots that number
+	int ret_num = !(check_num ^ my_mask);
+	
+	return ret_num;
+	 
+  
 }
 /* 
  * negate - return -x 
@@ -231,7 +232,10 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+
+	//takes the twos compliment and adds 1
+	int invert = ~x + 1;
+  return invert;
 }
 //3
 /* 
@@ -263,7 +267,30 @@ int conditional(int x, int y, int z) {
  *   Max ops: 24
  *   Rating: 3
  */
+
+/*
+ * first we need to narrow down to the sign bit by shifting x and y 31 to the right
+ *then we take the xor of that and ! that which is 1 if the signs are different.
+ then check if x is neg and signs are different by anding x with var above
+
+ */
 int isLessOrEqual(int x, int y) {
+
+	int x_sign = x>>31;				//set sign bit for x
+	int y_sign = y<<31;				//set sign bit for y
+
+	//outputs 1 if signs are different - so for 4,5 this would be 0 & 0 both
+	//! to 1 and 1 which would still give a 0 because the sign bits are the same
+	int d_sign = !(x_sign) ^ !(y_sign);
+
+	//cond1 is 1 when d_sign = 1 and x os negative so 1 & 1 = 1
+	int cond1 = d_sign & x_sign;
+
+	//
+	int cond2 = !d_sign & 
+
+	       
+
   return 2;
 }
 //4
