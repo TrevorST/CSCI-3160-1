@@ -358,7 +358,54 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+	
+	 //set result
+        int result = 0;
+
+        //find the sign bit
+        int sbit = x >> 31;
+
+        //flips bits if x is neg
+        x = (sbit & ~x) | (~sbit & x);
+
+        //checks the 16th if x has to the 16th place shifts right 16 and
+        //resets x if needed
+        int placeholder = !!(x >> 16) << 4;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 8th if x has to the 8th place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 8) << 3;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 4th if x has to the 4th place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 4) << 2;
+        x = x >> placeholder;
+        result += placeholder;
+	
+	//checks the 2nd if x has to the 2nd place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 2) << 1;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 1st if x has to the 1st place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 1);
+        x = x >> placeholder;
+        result += placeholder;
+
+        //0th bit
+        int zeroBit = x;
+        result += zeroBit;
+
+        //adds one at the end for 0
+        result += 1;
+
+        return result;
 }
 //float
 /* 
