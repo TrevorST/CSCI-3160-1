@@ -295,11 +295,35 @@ int isLessOrEqual(int x, int y) {
  *   Max ops: 12
  *   Rating: 4 
  */
+/*
+ * TEST CODE I RAN IN AN ONLINE IDE TO FINALIZE HOW THIS WOULD WORK BELOW
+ *
+ * int main()
+ * {
+ *     int x = 0;
+ *
+ *     int y = x >> 31;
+ *
+ *     int z = (~x+1) >>31;
+ *
+ *     int result = (y | z) +1;
+ *
+ *     printf("%d, %d, %d", y, z, result);
+ *
+ *     return 0
+ */
 int logicalNeg(int x) {
-  int temp = (x + (~0 + 1)) | (0 + (~x + 1));
-  temp = temp >> 31;
-  temp = temp ^ ~0;
-  return !(~temp);
+         //if x!= 0 right shit the number to get its signed bit if positive 0 if negative -1
+         //if x== 0 the all that but 0 would be the outcome
+         int s_bit_normal = x >> 31;
+
+         //if x!= 0 negate plus 1 to get the inverse right shift and plus 1 to get 0
+         //if x == 0 then is 0
+         int s_bit_neg = (~x+1) >> 31;
+
+         //or together and add 1 to give 0 if x != 0 gives 1 if x== 0
+         int result = (s_bit_normal | s_bit_neg) + 1;
+         return result;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
