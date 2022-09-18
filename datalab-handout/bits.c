@@ -258,7 +258,27 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+
+        //turns x into boolean 1 or 0 this will be used as the basis for everything moving forward
+        int dub_not_x = !(!x);
+
+        //takes x and makes it able to be used as a conditional operator with y and z
+        //this is done because the truth of x determines y or z (either -1 or 0)
+        int mask = ~(dub_not_x&1)+1;
+
+        //conditional operator is added to y because if x is true the y is the result
+         //if x is true the var is -1 meaning y is returned
+        int res_y = mask & y;
+
+        //in this case the ~of mask & with z will be what is used to determine if z is
+        //the result if x is false or 0 then z is the result
+        int res_z = (~mask)&z;
+
+        //adding together gives the answer becuase it will either be 0 + z or y + 0
+        int result = res_y + res_z;
+
+        return result;
+
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
