@@ -206,7 +206,13 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  /* if x is Tmax, then adding one to x and adding the sum back to x will create -1 */
+  int tMax_check = ((x + 1) + x);
+  /* adding 1 to -1 makes 0, anything else will remain a nonzero number */
+  int negative_one_check = !(x + 1);
+  /* if either tMax or negative one checks return a one, then they failed and x is not Tmax */
+  int x_test = ~tMax_check | negative_one_check;
+  return !x_test;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -248,7 +254,11 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  int three_mask = !((x >> 4) ^ 3);
+  int bit_four_check = !((x >> 3) & 1);
+  int middle_bits = !(x & 6);
+  int nine_or_less = (bit_four_check | middle_bits);
+  return (three_mask & nine_or_less);
 }
 /* 
  * conditional - same as x ? y : z 
