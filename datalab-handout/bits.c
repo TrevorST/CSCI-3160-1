@@ -268,7 +268,27 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+
+        //turns x into boolean 1 or 0 this will be used as the basis for everything moving forward
+        int dub_not_x = !(!x);
+
+        //takes x and makes it able to be used as a conditional operator with y and z
+        //this is done because the truth of x determines y or z (either -1 or 0)
+        int mask = ~(dub_not_x&1)+1;
+
+        //conditional operator is added to y because if x is true the y is the result
+         //if x is true the var is -1 meaning y is returned
+        int res_y = mask & y;
+
+        //in this case the ~of mask & with z will be what is used to determine if z is
+        //the result if x is false or 0 then z is the result
+        int res_z = (~mask)&z;
+
+        //adding together gives the answer becuase it will either be 0 + z or y + 0
+        int result = res_y + res_z;
+
+        return result;
+
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -286,22 +306,15 @@ int conditional(int x, int y, int z) {
  */
 int isLessOrEqual(int x, int y) {
 
-	int x_sign = x>>31;				//set sign bit for x
-	int y_sign = y<<31;				//set sign bit for y
+	int x_sign = x>>31;                             //set sign bit for x
+        int y_sign = y>>31;                             //set sign bit for y
 
-	//outputs 1 if signs are different - so for 4,5 this would be 0 & 0 both
-	//! to 1 and 1 which would still give a 0 because the sign bits are the same
-	int d_sign = !(x_sign) ^ !(y_sign);
+        int d_sign = x_sign & (!y_sign);
 
-	//cond1 is 1 when d_sign = 1 and x os negative so 1 & 1 = 1
-	int cond1 = d_sign & x_sign;
+        int s_sign = ((x+(~y)) >>31) & (!(x_sign ^ y_sign));
 
-	//
-	int cond2 = !d_sign & 
+        return d_sign|s_sign;
 
-	       
-
-  return 2;
 }
 //4
 /* 
@@ -312,11 +325,35 @@ int isLessOrEqual(int x, int y) {
  *   Max ops: 12
  *   Rating: 4 
  */
+/*
+ * TEST CODE I RAN IN AN ONLINE IDE TO FINALIZE HOW THIS WOULD WORK BELOW
+ *
+ * int main()
+ * {
+ *     int x = 0;
+ *
+ *     int y = x >> 31;
+ *
+ *     int z = (~x+1) >>31;
+ *
+ *     int result = (y | z) +1;
+ *
+ *     printf("%d, %d, %d", y, z, result);
+ *
+ *     return 0
+ */
 int logicalNeg(int x) {
-  int temp = (x + (~0 + 1)) | (0 + (~x + 1));
-  temp = temp >> 31;
-  temp = temp ^ ~0;
-  return !(~temp);
+         //if x!= 0 right shit the number to get its signed bit if positive 0 if negative -1
+         //if x== 0 the all that but 0 would be the outcome
+         int s_bit_normal = x >> 31;
+
+         //if x!= 0 negate plus 1 to get the inverse right shift and plus 1 to get 0
+         //if x == 0 then is 0
+         int s_bit_neg = (~x+1) >> 31;
+
+         //or together and add 1 to give 0 if x != 0 gives 1 if x== 0
+         int result = (s_bit_normal | s_bit_neg) + 1;
+         return result;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
@@ -331,7 +368,54 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+	
+	 //set result
+        int result = 0;
+
+        //find the sign bit
+        int sbit = x >> 31;
+
+        //flips bits if x is neg
+        x = (sbit & ~x) | (~sbit & x);
+
+        //checks the 16th if x has to the 16th place shifts right 16 and
+        //resets x if needed
+        int placeholder = !!(x >> 16) << 4;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 8th if x has to the 8th place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 8) << 3;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 4th if x has to the 4th place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 4) << 2;
+        x = x >> placeholder;
+        result += placeholder;
+	
+	//checks the 2nd if x has to the 2nd place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 2) << 1;
+        x = x >> placeholder;
+        result += placeholder;
+
+        //checks the 1st if x has to the 1st place shifts right 16 and
+        //resets x if needed
+        placeholder = !!(x >> 1);
+        x = x >> placeholder;
+        result += placeholder;
+
+        //0th bit
+        int zeroBit = x;
+        result += zeroBit;
+
+        //adds one at the end for 0
+        result += 1;
+
+        return result;
 }
 //float
 /* 
