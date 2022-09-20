@@ -178,6 +178,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
+  /* We can AND each parameter with the bit-flipped version of the other, and then AND their results. This works by revealing where the parameters have 1's in common and where they do not. */
   int xFlip = ~x;
   int yFlip = ~y;
   int xSet = x & yFlip;
@@ -194,6 +195,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
+  /* exploit bit shifting to generate large numbers by multiplying by 2; minimum 2's complement would be the most negative number, which is 1 followed by 31 zeros. */
   int a = 1 << 31;
   return a;
 }
@@ -206,11 +208,9 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  /* if x is Tmax, then adding one to x and adding the sum back to x will create -1 */
+  /* if x is Tmax, then adding one to x and adding the sum back to x will create -1. Tmax and -1 are the only cases where this would be true, so !(x + 1) will return 1 if x is -1. Flipping x will return 0 if it is Tmax and so will !(x + 1), meaning Tmax will always result in 0 being returned and !0 always returning 1. */
   int tMax_check = ((x + 1) + x);
-  /* adding 1 to -1 makes 0, anything else will remain a nonzero number */
   int negative_one_check = !(x + 1);
-  /* if either tMax or negative one checks return a one, then they failed and x is not Tmax */
   int x_test = ~tMax_check | negative_one_check;
   return !x_test;
 }
@@ -223,7 +223,7 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  /* Generates a mask of the desired bits to be set to 1 to quickly check for compliance. */	
+  /* Generates a mask of the desired bits to be set to 1 to quickly check for compliance. ANDing with the mask makes sure that all the ones are actually set, and then XOR will return with 0 if our desired bits are set. */	
   int a = 170;
   int b = (a << 8) + 170;
   int c = (b << 16) + b;
@@ -239,7 +239,7 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  /* Utilizes the two's complement to find the negative of any value */	
+  /* Utilizes the two's complement to find the negative of any value. */	
   int a = ~x + 1;
   return a;
 }
@@ -254,6 +254,7 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
+  /* First need to check that the given value is not above 0x3whatever and return 1 if it complies. After making sure bits 5-8 give us a hex 3, the only case we care about in bits 1-4 is if bit 4 is a 1; if it is, we must make sure that bits 2-3 are both 0. Every other combination of the last 4 bits will pass. */
   int three_mask = !((x >> 4) ^ 3);
   int bit_four_check = !((x >> 3) & 1);
   int middle_bits = !(x & 6);
@@ -325,23 +326,6 @@ int isLessOrEqual(int x, int y) {
  *   Max ops: 12
  *   Rating: 4 
  */
-/*
- * TEST CODE I RAN IN AN ONLINE IDE TO FINALIZE HOW THIS WOULD WORK BELOW
- *
- * int main()
- * {
- *     int x = 0;
- *
- *     int y = x >> 31;
- *
- *     int z = (~x+1) >>31;
- *
- *     int result = (y | z) +1;
- *
- *     printf("%d, %d, %d", y, z, result);
- *
- *     return 0
- */
 int logicalNeg(int x) {
          //if x!= 0 right shit the number to get its signed bit if positive 0 if negative -1
          //if x== 0 the all that but 0 would be the outcome
@@ -349,7 +333,7 @@ int logicalNeg(int x) {
 
          //if x!= 0 negate plus 1 to get the inverse right shift and plus 1 to get 0
          //if x == 0 then is 0
-         int s_bit_neg = (~x+1) >> 31;
+         int s_bit_neg = (~x + 1) >> 31;
 
          //or together and add 1 to give 0 if x != 0 gives 1 if x== 0
          int result = (s_bit_normal | s_bit_neg) + 1;
@@ -369,7 +353,7 @@ int logicalNeg(int x) {
  */
 int howManyBits(int x) {
 	
-	 //set result
+	//set result
         int result = 0;
 
         //find the sign bit
@@ -380,33 +364,33 @@ int howManyBits(int x) {
 
         //checks the 16th if x has to the 16th place shifts right 16 and
         //resets x if needed
-        int placeholder = !!(x >> 16) << 4;
-        x = x >> placeholder;
-        result += placeholder;
+        int k = !!(x >> 16) << 4;
+        x = x >> k;
+        result += k;
 
         //checks the 8th if x has to the 8th place shifts right 16 and
         //resets x if needed
-        placeholder = !!(x >> 8) << 3;
-        x = x >> placeholder;
-        result += placeholder;
+        k = !!(x >> 8) << 3;
+        x = x >> k;
+        result += k;
 
         //checks the 4th if x has to the 4th place shifts right 16 and
         //resets x if needed
-        placeholder = !!(x >> 4) << 2;
-        x = x >> placeholder;
-        result += placeholder;
+        k = !!(x >> 4) << 2;
+        x = x >> k;
+        result += k;
 	
 	//checks the 2nd if x has to the 2nd place shifts right 16 and
         //resets x if needed
-        placeholder = !!(x >> 2) << 1;
-        x = x >> placeholder;
-        result += placeholder;
+        k = !!(x >> 2) << 1;
+        x = x >> k;
+        result += k;
 
         //checks the 1st if x has to the 1st place shifts right 16 and
         //resets x if needed
-        placeholder = !!(x >> 1);
-        x = x >> placeholder;
-        result += placeholder;
+        k = !!(x >> 1);
+        x = x >> k;
+        result += k;
 
         //0th bit
         int zeroBit = x;
