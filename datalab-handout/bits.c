@@ -1,7 +1,9 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * Calen Cummings, cummingscc (completed bitXor, tmin, isTmax, allOddBits, negate, and isAsciiDigit)
+ * Cory Windham, windham (completed logicalNeg, isLessOrEqual, howManyBits, and conditional)
+ * Trevor Taylor, taylorts (completed logicalNeg, lessThanOrEqual, tmin)
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -226,9 +228,9 @@ int allOddBits(int x) {
   /* Generates a mask of the desired bits to be set to 1 to quickly check for compliance. ANDing with the mask makes sure that all the ones are actually set, and then XOR will return with 0 if our desired bits are set. */	
   int a = 170;
   int b = (a << 8) + 170;
-  int c = (b << 16) + b;
-  int d = c & x;
-  a = d ^ c;
+  int mask = (b << 16) + b;
+  int d = mask & x;
+  a = d ^ mask;
   return !a;
 }
 /* 
